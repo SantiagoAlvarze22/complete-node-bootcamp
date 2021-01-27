@@ -35,6 +35,12 @@ fs.readFile('1-node-farm/starter/txt/start.txt', 'utf-8', (err, data1) => {
 /////////////////////////
 //server
 
+const data = fs.readFileSync(
+  './1-node-farm/starter/dev-data/data.json',
+  'utf-8'
+);
+const dataObj = JSON.parse(data);
+
 //1. create the server
 const server = http.createServer((req, res) => {
   //sending back a response to the client everytime that a new request hits the server
@@ -47,6 +53,11 @@ const server = http.createServer((req, res) => {
     res.end('This is the OVERVIEW');
   } else if (pathName === '/product') {
     res.end('This is the PRODUCT');
+  } else if (pathName === '/api') {
+    res.writeHead(200, {
+      'Content-type': 'application/json',
+    });
+    res.end(data);
   } else {
     //I send headers before de response
     res.writeHead(404, {
