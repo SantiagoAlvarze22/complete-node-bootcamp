@@ -1,5 +1,6 @@
 const fs = require('fs');
 const http = require('http');
+const url = require('url');
 
 //files
 //blocking synchronous way
@@ -38,7 +39,24 @@ fs.readFile('1-node-farm/starter/txt/start.txt', 'utf-8', (err, data1) => {
 const server = http.createServer((req, res) => {
   //sending back a response to the client everytime that a new request hits the server
   // console.log(req);
-  res.end('Hello from the server!');
+  // console.log(req.url);
+  // '/' projects root
+
+  const pathName = req.url;
+  if (pathName === '/' || pathName === '/overview') {
+    res.end('This is the OVERVIEW');
+  } else if (pathName === '/product') {
+    res.end('This is the PRODUCT');
+  } else {
+    //I send headers before de response
+    res.writeHead(404, {
+      'Content-type': 'text/html',
+      'my-own-header': 'hello-workd',
+    });
+    res.end('Page not found');
+  }
+
+  res.end('<h1>Hello from the server!</h1>');
 });
 
 //2. start the server
